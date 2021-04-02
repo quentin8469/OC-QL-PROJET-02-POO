@@ -24,6 +24,15 @@ class Book:
         upc = self.soupe.find_all("td")[0].text
         return upc
 
+    def get_data_in_dictionnarie(self):
+        """ get all data of one book in a dictionnarie """
+
+        book_data = {}
+        book_data["Book_Url"] = self.url
+        book_data["UPC"] = self.upc
+
+        return book_data
+
 
 def main():
     """ ddd """
@@ -36,9 +45,9 @@ def main():
     print("bob2")
     livre = Book(url_book, soupe)
     print("bob3")
-    livre.get_universal_product_code()
+    print(livre.get_data_in_dictionnarie())
     print("bob4")
-    return print(livre.get_universal_product_code())
+    return print(livre)
 
 
 print("bob5")
