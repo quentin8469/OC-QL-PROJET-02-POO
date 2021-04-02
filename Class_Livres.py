@@ -27,6 +27,8 @@ class Book:
         self.Number_avialable = self.get_number_available()
         self.review_rating = self.get_review_rating()
         self.image_url = self.get_image_url()
+        self.local_image_path = self.download_picture()
+        # self.image_directory = self.picture_directory()
 
     def get_universal_product_code(self):
         """ get UPC of a book """
@@ -89,6 +91,35 @@ class Book:
         url_image = image_book.replace("../../", "http://books.toscrape.com/")
         return url_image
 
+    '''
+    def picture_directory(self, cat_image):
+        """ create pictures directory for one category """
+
+        try:
+            os.mkdir(cat_image)
+        except:
+            pass
+        try:
+            os.chdir(cat_image)
+        except:
+            pass
+    '''
+
+    def download_picture(self):
+        """ download pictures in directory """
+
+        cat_image = self.category
+        # self.picture_directory(cat_image)
+        picture_title = self.upc
+        url_image = self.image_url
+        lien_image = requests.get(url_image)
+        with open(f"{cat_image}_{picture_title}.jpg", "wb") as dl_image:
+            dl_image.write(lien_image.content)
+
+        local = os.getcwd()
+        # os.chdir("../")
+        return local
+
     def get_data_in_dictionnarie(self):
         """ get all data of one book in a dictionnarie """
 
@@ -104,6 +135,7 @@ class Book:
         book_data["Number_available"] = self.Number_avialable
         book_data["Review_rating"] = self.review_rating
         book_data["Image_url"] = self.image_url
+        book_data["local_Image_path"] = self.local_image_path
 
         return book_data
 
@@ -117,12 +149,10 @@ def main():
     url_book1 = (
         "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"
     )
-    url_book2 = "https://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
 
     livre1 = Book(url_book1)
-    livre2 = Book(url_book2)
 
-    return (livre1.get_data_in_dictionnarie(), livre2.get_data_in_dictionnarie())
+    return livre1.get_data_in_dictionnarie()
 
 
 if __name__ == "__main__":
